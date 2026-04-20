@@ -166,21 +166,14 @@ function saveSession() {
 function resetQuestions() {
     if (!currentSession) return;
     
-    if (!confirm(`確定要重置「${currentSession}」的題目嗎？\n重置後會重新從 30 題開始抽。`)) {
+    if (!confirm(`確定要重置嗎？\n這會清除「${currentSession}」的資料，並讓你輸入新的組名。`)) {
         return;
     }
     
-    // Just clear drawn questions, keep the same session
+    // Delete the session from storage and clear everything
+    deleteSession(currentSession);
+    currentSession = null;
     drawnQuestions = new Set();
-    saveCurrentSession();
-    
-    const questionText = document.getElementById('questionText');
-    const questionType = document.getElementById('questionType');
-    const questionCard = document.getElementById('questionCard');
-    
-    questionText.textContent = '已重置！點擊下方按鈕重新開始抽題目';
-    questionType.textContent = '';
-    questionCard.classList.remove('active');
     
     updateUI();
 }
