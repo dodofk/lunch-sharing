@@ -142,6 +142,109 @@ section h2 {
     font-weight: bold;
 }
 
+/* Session Box */
+.session-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f8f0ff 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e0e7ff;
+}
+
+.session-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #667eea;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.session-row {
+    display: flex;
+    gap: 10px;
+}
+
+.session-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #d1d5ff;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.session-input:focus {
+    border-color: #667eea;
+}
+
+.session-input::placeholder {
+    color: #a0a8cc;
+    font-size: 14px;
+}
+
+.session-btn {
+    padding: 12px 24px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.session-btn:hover {
+    background: #5568d3;
+}
+
+.session-current {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.session-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.session-change {
+    padding: 6px 14px;
+    background: transparent;
+    color: #667eea;
+    border: 1.5px solid #667eea;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.session-change:hover {
+    background: #667eea;
+    color: white;
+}
+
+.session-count {
+    font-size: 14px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.session-count .count-number {
+    font-weight: 700;
+    color: #667eea;
+}
+
 /* Question Section */
 .question-card {
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
@@ -186,6 +289,7 @@ section h2 {
     opacity: 1;
 }
 
+/* Buttons */
 .draw-btn {
     width: 100%;
     padding: 16px 32px;
@@ -202,19 +306,50 @@ section h2 {
     gap: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
     font-family: inherit;
+    margin-bottom: 12px;
 }
 
-.draw-btn:hover {
+.draw-btn:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-.draw-btn:active {
+.draw-btn:active:not(:disabled) {
     transform: translateY(0);
+}
+
+.draw-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #c5c9d0;
 }
 
 .btn-icon {
     font-size: 22px;
+}
+
+.reset-btn {
+    width: 100%;
+    padding: 12px 24px;
+    background: transparent;
+    color: #888;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.reset-btn:hover {
+    color: #667eea;
+    border-color: #667eea;
+    background: #667eea08;
 }
 
 /* Lunch Links */
@@ -320,5 +455,13 @@ footer {
     
     .info-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .session-row {
+        flex-direction: column;
+    }
+    
+    .session-btn {
+        width: 100%;
     }
 }

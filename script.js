@@ -37,29 +37,188 @@ const questions = [
     { text: "有沒有什麼「一定要親自去」的口袋名單？", category: "輕鬆閒聊" }
 ];
 
-// 已抽過的問題索引
+// Storage keys
+const STORAGE_KEY = 'lunch-sharing-v1';
+
+// Current session state
+let currentSession = null;
 let drawnQuestions = new Set();
 
-// 抽問題功能
+// ============ Storage Functions ============
+
+function getAllSessions() {
+    try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : {};
+    } catch (e) {
+        console.warn('Failed to read from localStorage:', e);
+        return {};
+    }
+}
+
+function saveSessions(sessions) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+    } catch (e) {
+        console.warn('Failed to write to localStorage:', e);
+    }
+}
+
+function loadSession(sessionName) {
+    const sessions = getAllSessions();
+    const sessionData = sessions[sessionName];
+    if (sessionData && sessionData.drawn) {
+        drawnQuestions = new Set(sessionData.drawn);
+    } else {
+        drawnQuestions = new Set();
+    }
+    currentSession = sessionName;
+    updateUI();
+}
+
+function saveCurrentSession() {
+    if (!currentSession) return;
+    const sessions = getAllSessions();
+    sessions[currentSession] = {
+        drawn: Array.from(drawnQuestions),
+        updatedAt: new Date().toISOString()
+    };
+    saveSessions(sessions);
+}
+
+function deleteSession(sessionName) {
+    const sessions = getAllSessions();
+    delete sessions[sessionName];
+    saveSessions(sessions);
+}
+
+// ============ UI Functions ============
+
+function updateUI() {
+    const inputBox = document.getElementById('sessionInput');
+    const sessionBtn = document.getElementById('sessionBtn');
+    const sessionRow = inputBox.parentElement;
+    const sessionDisplay = document.getElementById('sessionDisplay');
+    const sessionName = document.getElementById('sessionName');
+    const sessionCount = document.getElementById('sessionCount');
+    const drawBtn = document.getElementById('drawBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const questionText = document.getElementById('questionText');
+    const questionType = document.getElementById('questionType');
+    const questionCard = document.getElementById('questionCard');
+    
+    if (currentSession) {
+        // Show session info
+        sessionRow.style.display = 'none';
+        sessionDisplay.style.display = 'flex';
+        sessionName.textContent = currentSession;
+        
+        // Enable draw button
+        drawBtn.disabled = false;
+        
+        // Show count
+        const remaining = questions.length - drawnQuestions.size;
+        const total = questions.length;
+        if (remaining === 0) {
+            sessionCount.innerHTML = '✅ 所有題目都抽完囉！可以點「重新開始」重置';
+            drawBtn.disabled = true;
+            drawBtn.textContent = '題目已用完';
+            drawBtn.querySelector('.btn-icon') && (drawBtn.querySelector('.btn-icon').textContent = '✅');
+        } else {
+            sessionCount.innerHTML = `還剩 <span class="count-number">${remaining}</span> / ${total} 題`;
+            drawBtn.disabled = false;
+            drawBtn.innerHTML = '<span class="btn-icon">🎲</span> 抽一個問題';
+        }
+        
+        // Show reset button if any questions drawn
+        resetBtn.style.display = drawnQuestions.size > 0 ? 'flex' : 'none';
+        
+        // If first time, show hint
+        if (drawnQuestions.size === 0) {
+            questionText.textContent = '點擊下方按鈕開始抽題目！';
+            questionType.textContent = '';
+            questionCard.classList.remove('active');
+        }
+    } else {
+        // Show input
+        sessionRow.style.display = 'flex';
+        sessionDisplay.style.display = 'none';
+        sessionCount.textContent = '';
+        drawBtn.disabled = true;
+        resetBtn.style.display = 'none';
+        questionText.textContent = '先設定組名，再點擊下方按鈕抽題目';
+        questionType.textContent = '';
+        questionCard.classList.remove('active');
+    }
+}
+
+function saveSession() {
+    const input = document.getElementById('sessionInput');
+    const name = input.value.trim();
+    
+    if (!name) {
+        alert('請輸入組名！');
+        return;
+    }
+    
+    loadSession(name);
+    input.value = '';
+}
+
+function changeSession() {
+    currentSession = null;
+    drawnQuestions = new Set();
+    updateUI();
+}
+
+function resetQuestions() {
+    if (!currentSession) return;
+    
+    if (!confirm(`確定要重置「${currentSession}」的題目嗎？\n重置後會重新從 30 題開始抽。`)) {
+        return;
+    }
+    
+    drawnQuestions = new Set();
+    saveCurrentSession();
+    
+    const questionText = document.getElementById('questionText');
+    const questionType = document.getElementById('questionType');
+    const questionCard = document.getElementById('questionCard');
+    
+    questionText.textContent = '已重置！點擊下方按鈕重新開始抽題目';
+    questionType.textContent = '';
+    questionCard.classList.remove('active');
+    
+    updateUI();
+}
+
+// ============ Draw Question ============
+
 function drawQuestion() {
+    if (!currentSession) return;
+    
     const card = document.getElementById('questionCard');
     const text = document.getElementById('questionText');
     const type = document.getElementById('questionType');
     const btn = document.getElementById('drawBtn');
     
-    // 如果全部抽完，重置
+    // If all questions drawn, show message
     if (drawnQuestions.size >= questions.length) {
-        drawnQuestions.clear();
+        text.textContent = '所有題目都抽完囉！';
+        type.textContent = '';
+        card.classList.add('active');
+        updateUI();
+        return;
     }
     
-    // 按鈕動畫
+    // Button animation
     btn.disabled = true;
     btn.style.opacity = '0.7';
     
-    // 卡片搖晃動畫
+    // Card shake animation
     card.classList.add('shake');
     
-    // 快速切換文字效果
+    // Rapid text switching effect
     let count = 0;
     const interval = setInterval(() => {
         const randomIdx = Math.floor(Math.random() * questions.length);
@@ -70,7 +229,7 @@ function drawQuestion() {
         if (count > 8) {
             clearInterval(interval);
             
-            // 選出最終問題
+            // Pick final question
             let availableQuestions = questions.filter((_, idx) => !drawnQuestions.has(idx));
             if (availableQuestions.length === 0) {
                 drawnQuestions.clear();
@@ -81,7 +240,10 @@ function drawQuestion() {
             const finalIndex = questions.indexOf(finalQuestion);
             drawnQuestions.add(finalIndex);
             
-            // 顯示結果
+            // Save to localStorage
+            saveCurrentSession();
+            
+            // Display result
             text.textContent = finalQuestion.text;
             text.style.opacity = '1';
             type.textContent = finalQuestion.category;
@@ -91,12 +253,62 @@ function drawQuestion() {
             
             btn.disabled = false;
             btn.style.opacity = '1';
+            
+            updateUI();
         }
     }, 80);
 }
 
-// 頁面載入完成後初始化
+// ============ Initialization ============
+
+function init() {
+    // Check if there's a saved session
+    const sessions = getAllSessions();
+    const sessionNames = Object.keys(sessions);
+    
+    // Try to restore the most recently used session
+    if (sessionNames.length > 0) {
+        // Sort by updatedAt, most recent first
+        const sortedSessions = sessionNames.sort((a, b) => {
+            const aTime = sessions[a].updatedAt || 0;
+            const bTime = sessions[b].updatedAt || 0;
+            return new Date(bTime) - new Date(aTime);
+        });
+        
+        const lastSession = sortedSessions[0];
+        const lastData = sessions[lastSession];
+        
+        // Only auto-restore if it was used today
+        if (lastData.updatedAt) {
+            const lastDate = new Date(lastData.updatedAt);
+            const today = new Date();
+            const isToday = lastDate.toDateString() === today.toDateString();
+            
+            if (isToday && lastData.drawn && lastData.drawn.length < questions.length) {
+                loadSession(lastSession);
+                return;
+            }
+        }
+    }
+    
+    // Fresh start
+    updateUI();
+}
+
+// Handle Enter key in session input
 document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('sessionInput');
+    if (input) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveSession();
+            }
+        });
+    }
+    
+    init();
+    
     console.log('午餐分享會網站已載入 🍱');
     console.log(`共有 ${questions.length} 個問題可供抽取`);
+    console.log('使用 localStorage 儲存各組抽題紀錄');
 });

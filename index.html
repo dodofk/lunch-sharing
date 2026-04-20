@@ -53,18 +53,37 @@
 
         <section class="question-section">
             <h2>話題抽抽樂</h2>
-            <p class="section-desc">不知道聊什麼？點一下隨機抽題目！</p>
+            <p class="section-desc">每組請一位代表操作，題目不會重複出現！</p>
+            
+            <!-- Session Management -->
+            <div class="session-box" id="sessionBox">
+                <div class="session-label">目前分組</div>
+                <div class="session-row">
+                    <input type="text" id="sessionInput" class="session-input" placeholder="輸入組名（例如：第一組）" maxlength="20">
+                    <button class="session-btn" id="sessionBtn" onclick="saveSession()">設定</button>
+                </div>
+                <div class="session-current" id="sessionDisplay" style="display: none;">
+                    <span class="session-name" id="sessionName"></span>
+                    <button class="session-change" onclick="changeSession()">換組</button>
+                </div>
+                <div class="session-count" id="sessionCount"></div>
+            </div>
             
             <div class="question-card" id="questionCard">
                 <div class="question-text" id="questionText">
-                    點擊下方按鈕抽一個問題
+                    先設定組名，再點擊下方按鈕抽題目
                 </div>
                 <div class="question-type" id="questionType"></div>
             </div>
             
-            <button class="draw-btn" id="drawBtn" onclick="drawQuestion()">
+            <button class="draw-btn" id="drawBtn" onclick="drawQuestion()" disabled>
                 <span class="btn-icon">🎲</span>
                 抽一個問題
+            </button>
+            
+            <button class="reset-btn" id="resetBtn" onclick="resetQuestions()" style="display: none;">
+                <span>↺</span>
+                重新開始（重置題目）
             </button>
         </section>
 
