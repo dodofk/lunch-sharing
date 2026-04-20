@@ -216,24 +216,6 @@ section h2 {
     color: #1a1a2e;
 }
 
-.session-change {
-    padding: 6px 14px;
-    background: transparent;
-    color: #667eea;
-    border: 1.5px solid #667eea;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-}
-
-.session-change:hover {
-    background: #667eea;
-    color: white;
-}
-
 .session-count {
     font-size: 14px;
     color: #666;

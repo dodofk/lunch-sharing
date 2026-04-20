@@ -96,7 +96,6 @@ function deleteSession(sessionName) {
 
 function updateUI() {
     const inputBox = document.getElementById('sessionInput');
-    const sessionBtn = document.getElementById('sessionBtn');
     const sessionRow = inputBox.parentElement;
     const sessionDisplay = document.getElementById('sessionDisplay');
     const sessionName = document.getElementById('sessionName');
@@ -120,18 +119,17 @@ function updateUI() {
         const remaining = questions.length - drawnQuestions.size;
         const total = questions.length;
         if (remaining === 0) {
-            sessionCount.innerHTML = '✅ 所有題目都抽完囉！可以點「重新開始」重置';
+            sessionCount.innerHTML = '✅ 所有題目都抽完囉！可以點「重新開始」換下一組';
             drawBtn.disabled = true;
-            drawBtn.textContent = '題目已用完';
-            drawBtn.querySelector('.btn-icon') && (drawBtn.querySelector('.btn-icon').textContent = '✅');
+            drawBtn.innerHTML = '<span class="btn-icon">✅</span> 題目已用完';
         } else {
             sessionCount.innerHTML = `還剩 <span class="count-number">${remaining}</span> / ${total} 題`;
             drawBtn.disabled = false;
             drawBtn.innerHTML = '<span class="btn-icon">🎲</span> 抽一個問題';
         }
         
-        // Show reset button if any questions drawn
-        resetBtn.style.display = drawnQuestions.size > 0 ? 'flex' : 'none';
+        // Show reset button
+        resetBtn.style.display = 'flex';
         
         // If first time, show hint
         if (drawnQuestions.size === 0) {
@@ -146,7 +144,7 @@ function updateUI() {
         sessionCount.textContent = '';
         drawBtn.disabled = true;
         resetBtn.style.display = 'none';
-        questionText.textContent = '先設定組名，再點擊下方按鈕抽題目';
+        questionText.textContent = '先輸入組名，再點擊下方按鈕抽題目';
         questionType.textContent = '';
         questionCard.classList.remove('active');
     }
@@ -165,29 +163,19 @@ function saveSession() {
     input.value = '';
 }
 
-function changeSession() {
-    currentSession = null;
-    drawnQuestions = new Set();
-    updateUI();
-}
-
 function resetQuestions() {
     if (!currentSession) return;
     
-    if (!confirm(`確定要重置「${currentSession}」的題目嗎？\n重置後會重新從 30 題開始抽。`)) {
+    if (!confirm(`確定要結束「${currentSession}」嗎？\n結束後可以輸入新的組名重新開始。`)) {
         return;
     }
     
+    // Delete the session from storage
+    deleteSession(currentSession);
+    
+    // Clear current state
+    currentSession = null;
     drawnQuestions = new Set();
-    saveCurrentSession();
-    
-    const questionText = document.getElementById('questionText');
-    const questionType = document.getElementById('questionType');
-    const questionCard = document.getElementById('questionCard');
-    
-    questionText.textContent = '已重置！點擊下方按鈕重新開始抽題目';
-    questionType.textContent = '';
-    questionCard.classList.remove('active');
     
     updateUI();
 }
@@ -262,11 +250,10 @@ function drawQuestion() {
 // ============ Initialization ============
 
 function init() {
-    // Check if there's a saved session
+    // Check if there's a saved session from today
     const sessions = getAllSessions();
     const sessionNames = Object.keys(sessions);
     
-    // Try to restore the most recently used session
     if (sessionNames.length > 0) {
         // Sort by updatedAt, most recent first
         const sortedSessions = sessionNames.sort((a, b) => {
@@ -278,13 +265,13 @@ function init() {
         const lastSession = sortedSessions[0];
         const lastData = sessions[lastSession];
         
-        // Only auto-restore if it was used today
+        // Auto-restore if used today
         if (lastData.updatedAt) {
             const lastDate = new Date(lastData.updatedAt);
             const today = new Date();
             const isToday = lastDate.toDateString() === today.toDateString();
             
-            if (isToday && lastData.drawn && lastData.drawn.length < questions.length) {
+            if (isToday) {
                 loadSession(lastSession);
                 return;
             }
@@ -310,5 +297,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('午餐分享會網站已載入 🍱');
     console.log(`共有 ${questions.length} 個問題可供抽取`);
-    console.log('使用 localStorage 儲存各組抽題紀錄');
+    console.log('使用 localStorage 儲存抽題紀錄');
 });
