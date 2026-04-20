@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>午餐分享會 | Lunch Sharing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">2026.04.22 WED</div>
+            <h1>午餐分享會</h1>
+            <p class="subtitle">北部辦公室 AI 組 · 邊吃邊聊</p>
+        </header>
+
+        <section class="info-card">
+            <h2>活動資訊</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div>
+                        <strong>地點</strong>
+                        <p>多功能區</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🕐</span>
+                    <div>
+                        <strong>時間</strong>
+                        <p>12:30 ~ 13:30</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">👥</span>
+                    <div>
+                        <strong>形式</strong>
+                        <p>隨機分組，每組不超過 6 人</p>
+                    </div>
+                </div>
+            </div>
+            <div class="rules">
+                <h3>進行方式</h3>
+                <ul>
+                    <li>隨機入座，盡量不要超過 6 個人一組</li>
+                    <li>如果想去午休可以隨時離開</li>
+                    <li>如果很會聊天，自己想聊甚麼就聊甚麼吧，盡量照顧到平常不太會主動講話的人！</li>
+                    <li>不知道要聊甚麼？抽一個問題指定對象輪流回答吧！</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="question-section">
+            <h2>話題抽抽樂</h2>
+            <p class="section-desc">不知道聊什麼？點一下隨機抽題目！</p>
+            
+            <div class="question-card" id="questionCard">
+                <div class="question-text" id="questionText">
+                    點擊下方按鈕抽一個問題
+                </div>
+                <div class="question-type" id="questionType"></div>
+            </div>
+            
+            <button class="draw-btn" id="drawBtn" onclick="drawQuestion()">
+                <span class="btn-icon">🎲</span>
+                抽一個問題
+            </button>
+        </section>
+
+        <section class="lunch-info">
+            <h2>便當推薦</h2>
+            <p class="section-desc">避免買飯太久，推薦大家訂一樓的便當</p>
+            <div class="lunch-links">
+                <a href="https://eats.quickclick.cc/togo/25540?p=zoheyeats" target="_blank" class="lunch-card">
+                    <span class="lunch-icon">🍱</span>
+                    <div>
+                        <strong>作燴</strong>
+                        <span>點我訂餐</span>
+                    </div>
+                </a>
+                <a href="https://lihi2.com/9aLuo" target="_blank" class="lunch-card">
+                    <span class="lunch-icon">🥡</span>
+                    <div>
+                        <strong>好客萌</strong>
+                        <span>點我訂餐</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="feedback">
+            <h2>活動回饋</h2>
+            <p class="section-desc">活動結束後，麻煩幫我們填寫回饋表單 🙏</p>
+            <a href="https://forms.cloud.microsoft/r/WrTVCZQnt3" target="_blank" class="feedback-btn">
+                <span>📝</span>
+                填寫回饋表單
+            </a>
+        </section>
+
+        <footer>
+            <p>北部辦公室 AI 組 · 讓我們一起吃飯聊天 💬</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

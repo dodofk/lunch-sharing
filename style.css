@@ -1,0 +1,324 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Cards */
+section {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1a1a2e;
+}
+
+.section-desc {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.info-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.info-item strong {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.info-item p {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+/* Rules */
+.rules h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+}
+
+.rules ul {
+    list-style: none;
+}
+
+.rules li {
+    padding: 10px 0;
+    padding-left: 28px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+    color: #444;
+}
+
+.rules li:last-child {
+    border-bottom: none;
+}
+
+.rules li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Question Section */
+.question-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #c5c9d0;
+    transition: all 0.3s ease;
+}
+
+.question-card.active {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-color: #667eea;
+    border-style: solid;
+}
+
+.question-text {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.question-type {
+    font-size: 13px;
+    color: #667eea;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.question-card.active .question-type {
+    opacity: 1;
+}
+
+.draw-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.draw-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.draw-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 22px;
+}
+
+/* Lunch Links */
+.lunch-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.lunch-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.lunch-card:hover {
+    background: #667eea10;
+    border-color: #667eea30;
+    transform: translateY(-2px);
+}
+
+.lunch-icon {
+    font-size: 32px;
+}
+
+.lunch-card strong {
+    display: block;
+    font-size: 16px;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+}
+
+.lunch-card span {
+    font-size: 13px;
+    color: #667eea;
+    font-weight: 500;
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+}
+
+.feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: #1a1a2e;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.feedback-btn:hover {
+    background: #2d2d44;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 32px;
+    }
+    
+    section {
+        padding: 24px;
+    }
+    
+    .question-text {
+        font-size: 18px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
