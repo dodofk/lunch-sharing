@@ -1,4 +1,8 @@
-// 問題資料庫
+// ============ Site Toggle ============
+// Set to true to disable the site (shows maintenance message)
+const SITE_DISABLED = false;
+
+// ============ Question Database ============
 const questions = [
     // 最近生活
     { text: "如果你現在可以立刻吃到一樣東西，最想吃什麼？", category: "最近生活" },
@@ -282,6 +286,21 @@ function init() {
 
 // Handle Enter key in session input
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if site is disabled
+    if (SITE_DISABLED) {
+        document.body.innerHTML = `
+            <div class="disabled-overlay">
+                <div class="disabled-content">
+                    <div class="disabled-icon">🔒</div>
+                    <h1>網站暫時停用</h1>
+                    <p>此網站目前暫時停用，如有需要請聯繫管理員。</p>
+                    <p class="disabled-en">This site is currently disabled.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
     const input = document.getElementById('sessionInput');
     if (input) {
         input.addEventListener('keypress', (e) => {
@@ -290,9 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     init();
-    
+
     console.log('午餐分享會網站已載入 🍱');
     console.log(`共有 ${questions.length} 個問題可供抽取`);
     console.log('使用 localStorage 儲存抽題紀錄');
